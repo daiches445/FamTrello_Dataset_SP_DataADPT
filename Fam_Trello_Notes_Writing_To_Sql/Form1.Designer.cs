@@ -44,6 +44,7 @@
             this.btnUpdtateSQL = new System.Windows.Forms.Button();
             this.btnSPGetNoteID = new System.Windows.Forms.Button();
             this.btnGetNotes = new System.Windows.Forms.Button();
+            this.btnClearTable = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -195,11 +196,22 @@
             this.btnGetNotes.UseVisualStyleBackColor = true;
             this.btnGetNotes.Click += new System.EventHandler(this.btnGetNotes_Click);
             // 
+            // btnClearTable
+            // 
+            this.btnClearTable.Location = new System.Drawing.Point(343, 233);
+            this.btnClearTable.Name = "btnClearTable";
+            this.btnClearTable.Size = new System.Drawing.Size(75, 23);
+            this.btnClearTable.TabIndex = 16;
+            this.btnClearTable.Text = "clearTable";
+            this.btnClearTable.UseVisualStyleBackColor = true;
+            this.btnClearTable.Click += new System.EventHandler(this.btnClearTable_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnClearTable);
             this.Controls.Add(this.btnGetNotes);
             this.Controls.Add(this.btnSPGetNoteID);
             this.Controls.Add(this.btnUpdtateSQL);
@@ -243,6 +255,7 @@
         private System.Windows.Forms.Button btnUpdtateSQL;
         private System.Windows.Forms.Button btnSPGetNoteID;
         private System.Windows.Forms.Button btnGetNotes;
+        private System.Windows.Forms.Button btnClearTable;
     }
 }
 

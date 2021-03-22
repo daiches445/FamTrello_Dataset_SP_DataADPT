@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySqlX.XDevAPI.Relational;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,7 +17,6 @@ namespace Fam_Trello_Notes_Writing_To_Sql
         string conStr = @"Data Source=LAPTOP-RO7AUIMF\SQLEXPRESS;Initial Catalog=FamTrellTest;Integrated Security=True";
         SqlConnection con = null;
         SqlCommand comm = null;
-        SqlDataReader reader;
         SqlDataAdapter adpt;
         DataTable noteDataTbl;
         DataSet ds;
@@ -117,16 +117,16 @@ namespace Fam_Trello_Notes_Writing_To_Sql
 
         private void btnSPGetNoteID_Click(object sender, EventArgs e)
         {
+            
             comm = new SqlCommand("GetNoteByID",con);
             comm.CommandType = CommandType.StoredProcedure;
-            //SqlParameter par = new SqlParameter("@ID", SqlDbType.SmallInt) ;
-            //par.Direction = ParameterDirection.Input;
-            //par.Value = Convert.ToInt16(inpt_id.Text);
+
             comm.Parameters.AddWithValue("@ID", Convert.ToInt16(inpt_id.Text));
             con.Open();
-            //comm.Parameters.Add(par);
             SqlDataReader sr = comm.ExecuteReader();
-            
+
+
+
             while (sr.Read())
             {
                 MessageBox.Show(sr["ID"].ToString() + " " +sr["title"]);
@@ -136,20 +136,63 @@ namespace Fam_Trello_Notes_Writing_To_Sql
 
         private void btnGetNotes_Click(object sender, EventArgs e)
         {
+            ds = new DataSet("NotesSP");
             comm = new SqlCommand("GetNotes", con);
             comm.CommandType = CommandType.StoredProcedure;
-            con.Open();
-            SqlDataReader sr = comm.ExecuteReader();
+            //con.Open();
+            //SqlDataReader sr = comm.ExecuteReader();
+            //DataTable schemaTable = sr.GetSchemaTable();
 
-            DataTable data = new DataTable();
+            DataTable data = new DataTable("Notes");
+
+            SqlDataAdapter da = new SqlDataAdapter();
+            da.SelectCommand = comm;
+
+            da.Fill(ds);
+
+            dataGridView.DataSource = ds.Tables[0];
+
             
-            while (sr.Read())
-            {
-                data.NewRow();
-                data.Rows.Add(sr["ID"].ToString(),"dd","ss","ss");
-            }
-            dataGridView.DataSource = data;
+            //int count = 0;
+            //while (sr.Read())
+            //{
+            //    DataColumn column = new DataColumn();
+            //    column.DataType = sr[count].GetType();
+            //    column.ColumnName = sr.GetName(count);
+            //    data.Columns.Add(column);
+            //    count++;
+            //}
+
+
+            ////for (int i = 0; i < sr.FieldCount; i++)
+            ////{
+            ////    object co = sr.GetSqlValue(i);
+
+            ////    sr.NextResult();
+            ////}
+            
+            //sr.Close();
+            //sr = comm.ExecuteReader();
+
+            //while (sr.Read())
+            //{
+            //    DataRow dr = data.NewRow();
+            //    dr["ID"] = sr["ID"];
+            //    dr["title"] = sr["title"];
+            //    dr["description"] = sr["description"];
+            //    //dr["users_tagged"] = sr["users_tagged"];
+            //    data.Rows.Add(dr);
+            //}
+
+            //dataGridView.DataSource = data;
             con.Close();
+        }
+
+
+        private void btnClearTable_Click(object sender, EventArgs e)
+        {
+            ds.Clear();
+            dataGridView.DataSource = ds;
         }
     }
 }
